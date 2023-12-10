@@ -1,5 +1,6 @@
 import dotenv from "dotenv"
 dotenv.config();
+import path from 'path'
 import  express  from "express";
 import dbConnect from "../config/dbConnect.js";
 import userRoutes from "../routes/usersRoute.js";
@@ -85,11 +86,16 @@ app.post('/webhook',
 
 // app.listen(4242, () => console.log('Running on port 4242'));
 
-
+app.use(express.static('public'))
 
 //pass incoming data
 app.use(express.json())
+
 //routes
+//Home route
+app.use('/',(req, res) => {
+  res.sendFile(path.join('public', 'index.html'))
+})
 app.use('/api/v1/users/', userRoutes)
 app.use('/api/v1/products/', productsRouter)
 app.use('/api/v1/categories/', categoriesRouter)
